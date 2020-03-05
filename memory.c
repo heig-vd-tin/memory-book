@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define BLOCK_SIZE (0x10000)
+#define BLOCK_SIZE (0x1000)
 
 typedef struct file {
     char name[64];
@@ -17,20 +17,23 @@ typedef struct file {
 } File;
 
 typedef struct memory {
-    struct {
-        char *zeros[5];
-        char *ones[2];
-        char *random;
-        int *primes;
-        char *program;
-        void *arguments;
-        char *poemes;
-        char *swann;
+    union {
+        struct {
+            char *zeros[5];
+            char *ones[2];
+            char *random;
+            int *primes;
+            char *program;
+            void *arguments;
+            char *poemes;
+            char *swann;
 
-    } addresses;
+        } addresses;
+        uintptr_t addresses_array[48];
+    };
     char zeros0[BLOCK_SIZE];
     char ones0[BLOCK_SIZE];
-    char random[0x80000];
+    char random[BLOCK_SIZE];
     char zeros1[BLOCK_SIZE];
     int primes[0x1024];
     char filetree[BLOCK_SIZE];
@@ -47,9 +50,9 @@ typedef struct memory {
         char *chevelure;
         char *chat;
     } poemes;
-    char baudelaire[149206]; // Unicode
+    char baudelaire[148009]; // Unicode
     char zeros4[BLOCK_SIZE];
-    char swann[893662]; // ASCII
+    char swann[107345]; // ASCII
     char ones1[BLOCK_SIZE];
     char arg0[12];
     char arg1[6];
